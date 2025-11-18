@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRIEF | SOUTENONCE CROISEE</title>
+  <link rel="icon" type="image/jpg" href="img/icon.jpg">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+</head>
+
+<body class="font-['open_sans']">
+  <main class="w-full h-screen flex flex-col xl:flex-row gap-0.5">
+    <section class="  relative w-full h-100 md:w-screen md:h-screen xl:w-700 xl:h-screen 2xl:w-1400">
+      <img class="w-full h-full" src="img/floor.jpg" alt="the company floor">
+      <div class="grid grid-cols-13 grid-rows-6 w-full h-full absolute gap-x-2 top-0">
+        <div class=" col-span-5 row-span-2 mt-1 ml-1 py-8 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-2 xl:left-36 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-3 2xl:left-60 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-1 left-16 cursor-pointer">+</button>
+        </div>
+        <div class=" col-start-8 col-span-3 row-span-2 mt-1.5 py-8 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-2 xl:left-20 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-3 2xl:left-35 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-1 left-9 cursor-pointer">+</button>
+        </div>
+        <div class=" col-span-3 row-span-2 mt-1.5 -ml-1 py-8 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-2 xl:left-20 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-3 2xl:left-35 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-1 left-9 cursor-pointer">+</button>
+        </div>
+        <div class=" col-start-1 col-span-5 row-span-4 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-20 xl:left-40 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-30 2xl:left-65 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-5 left-17 cursor-pointer">+</button>
+        </div>
+        <div class=" col-start-8 row-start-5 col-span-3 row-span-2 -mr-0.5 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-4 xl:left-24 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-6 2xl:left-40 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-2 left-9 cursor-pointer">+</button>
+        </div>
+        <div class=" col-start-11 row-start-5 col-span-3 row-span-2 -ml-1 bg-white/35 relative">
+          <div>
+
+          </div>
+          <button
+            class="inZoneAdd w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-4 xl:left-24 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-6 2xl:left-40 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-2 left-9 cursor-pointer">+</button>
+        </div>
+      </div>
+    </section>
+    <section class="bg-[#c2996d] w-full h-full flex justify-center items-center">
+      <div
+        class="bg-[#ecbe8e] w-85 h-120 xl:h-180 2xl:h-230  2xl:w-110 rounded-xl flex flex-col items-center justify-around xl:justify-evenly">
+        <div>
+          <h1 class="text-xl font-bold text-black xl:text-2xl 2xl:text-3xl">Unassigned Staff : (<span>0</span>)</h1>
+        </div>
+        <div class="w-70 h-90 xl:h-120 xl:w-75 2xl:h-180 2xl:w-100 bg-[#bc976f] rounded-lg">
+
+        </div>
+        <div><button id="addNewWorker"
+            class="text-base text-white font-bold xl:text-xl 2xl:text-2xl bg-blue-600 py-2 px-4 rounded-lg cursor-pointer">Add
+            New Workers</button></div>
+      </div>
+    </section>
+    <section id="modal" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
+      aria-hidden="true">
+      <div id="modalForum"
+        class="w-90 h-175 xl:w-120 xl:h-180  bg-slate-300 rounded-lg shadow-2xl flex flex-col items-center py-5 gap-3 xl:gap-5 relative"
+        aria-modal="true">
+        <h1 class="text-2xl xl:text-3xl font-bold">Employee Information :</h1>
+        <form id="neWorkerForm" class="w-full h-full flex flex-col items-center gap-3 overflow-y-auto xl:gap-5">
+          <div class="flex flex-row justify-center gap-2">
+            <input id="firstName" class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text" id="firstName"
+              placeholder="First Name" required>
+            <input class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text" id="lastName"
+              placeholder="Last Name" required>
+          </div>
+          <select class="bg-white py-3 pl-1.5 w-82 text-[#858585] border-none rounded-md text-sm xl:text-lg xl:w-102"
+            name="Roles" id="role" required>
+            <option class="checked:text-black" value="">Choose a role</option>
+            <option class="checked:text-black" value="1">IT technicien</option>
+            <option class="checked:text-black" value="2">Manager</option>
+            <option class="checked:text-black" value="3">Cleaner</option>
+            <option class="checked:text-black" value="4">Security</option>
+            <option class="checked:text-black" value="5">Receptionist</option>
+            <option class="checked:text-black" value="6">Visitor</option>
+          </select>
+          <div class="flex flex-col gap-3">
+            <input id="photoUrl" class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="url" id="photo"
+              placeholder="URL of the photo">
+            <div id="photoZone"
+              class="w-20 h-20 xl:w-30 xl:h-30 bg-white rounded-full overflow-hidden">
+              <img id="imgUrl" src="" alt="">
+            </div>
+          </div>
+          <input class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="email" id="email"
+            placeholder="Email" required>
+          <input class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="number" id="phone"
+            placeholder="Phone" required>
+          <div id="exContainer" class="flex flex-col gap-1">
+            <div class="exParent w-82 rounded-md bg-slate-200 flex flex-col gap-6 py-2 xl:w-102 xl:gap-8">
+              <h1 class="text-xl font-bold text-center xl:text-2xl">Employee Experience :</h1>
+              <div class="flex flex-col items-center gap-3 xl:gap-5">
+                <input class="bg-white py-3 pl-1.5 w-78 rounded-md text-sm xl:text-lg xl:w-85 company" type="text"
+                  placeholder="Company Name" required>
+                <input class="bg-white py-3 pl-1.5 w-78 rounded-md text-sm xl:text-lg xl:w-85 exRole" type="text"
+                  placeholder="Role" required>
+
+              </div>
+              <div class="flex flex-col pl-2 xl:pl-9">
+                <label for="startDate" class="font-bold xl:text-xl">From : </label>
+                <input class="startDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50"
+                  type="date" required>
+                <label for=" endDate" class="font-bold xl:text-xl">To:</label>
+                <input class=" endDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50"
+                  type="date" required>
+              </div>
+            </div>
+          </div>
+          <div class="addEXContainer flex justify-center">
+            <p
+              class="addEX text-white text-lg font-bold py-1 px-2 bg-green-600 rounded-md xl:text-xl cursor-pointer">Add
+              Experience</p>
+          </div>
+          <button type="submit" id="submitBtn"
+            class="text-xl text-white font-bold bg-blue-500 py-1 px-2 rounded-md xl:text-2xl cursor-pointer">
+            SUBMIT</button>
+        </form>
+        <div id="closeModal"
+          class="w-8 h-8 flex xl:w-12 xl:h-12 xl:pt-2 justify-center pt-1 bg-red-500 rounded-full absolute -top-2.5 -right-1 cursor-pointer">
+          <i class="fi fi-br-cross-small text-white text-2xl xl:text-3xl"></i>
+        </div>
+      </div>
+    </section>
+    <section id="employeeList" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
+      aria-hidden="true">
+      <div
+        class="w-90 h-100 xl:w-120 xl:h-150 2xl:w-150 2xl:180 bg-slate-300 rounded-md shadow-2xl flex justify-center items-center relative">
+        <div class="w-80 h-80 xl:w-110 xl:h-110 2xl:w-130 2xl:h-130  bg-white rounded-md">
+
+        </div>
+        <div id="closeModalList"
+          class="w-8 h-8 xl:w-12 xl:h-12 xl:pt-2   flex  justify-center pt-1 bg-red-500 rounded-full absolute -top-2.5 -right-1 cursor-pointer">
+          <i class="fi fi-br-cross-small text-white text-2xl xl:text-3xl"></i>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+
+</html>
