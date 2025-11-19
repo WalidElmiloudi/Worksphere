@@ -66,11 +66,12 @@
     </section>
     <section class="bg-[#c2996d] w-full h-full flex justify-center items-center">
       <div
-        class="bg-[#ecbe8e] w-85 h-120 xl:h-180 2xl:h-230  2xl:w-110 rounded-xl flex flex-col items-center justify-around xl:justify-evenly">
+        class="bg-[#e5bc91] w-85 h-120 xl:h-180 2xl:h-230  2xl:w-110 rounded-xl flex flex-col items-center justify-around xl:justify-evenly">
         <div>
           <h1 class="text-xl font-bold text-black xl:text-2xl 2xl:text-3xl">Unassigned Staff : (<span>0</span>)</h1>
         </div>
-        <div class="w-70 h-90 xl:h-120 xl:w-75 2xl:h-180 2xl:w-100 bg-[#bc976f] rounded-lg">
+        <div id="unassaignedContainer"
+          class="w-70 h-90 xl:h-120 xl:w-75 2xl:h-180 2xl:w-100 bg-[#bc976f] rounded-lg flex flex-col items-center py-4 gap-2">
 
         </div>
         <div><button id="addNewWorker"
@@ -86,8 +87,8 @@
         <h1 class="text-2xl xl:text-3xl font-bold">Employee Information :</h1>
         <form id="neWorkerForm" class="w-full h-full flex flex-col items-center gap-3 overflow-y-auto xl:gap-5">
           <div class="flex flex-row justify-center gap-2">
-            <input id="firstName" class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text" id="firstName"
-              placeholder="First Name" required>
+            <input id="firstName" class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text"
+              id="firstName" placeholder="First Name" required>
             <input class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text" id="lastName"
               placeholder="Last Name" required>
           </div>
@@ -102,10 +103,9 @@
             <option class="checked:text-black" value="6">Visitor</option>
           </select>
           <div class="flex flex-col gap-3">
-            <input id="photoUrl" class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="url" id="photo"
-              placeholder="URL of the photo">
-            <div id="photoZone"
-              class="w-20 h-20 xl:w-30 xl:h-30 bg-white rounded-full overflow-hidden">
+            <input id="photoUrl" class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="url"
+              id="photo" placeholder="URL of the photo">
+            <div id="photoZone" class="w-20 h-20 xl:w-30 xl:h-30 bg-white rounded-full overflow-hidden">
               <img id="imgUrl" src="" alt="">
             </div>
           </div>
@@ -125,17 +125,17 @@
               </div>
               <div class="flex flex-col pl-2 xl:pl-9">
                 <label for="startDate" class="font-bold xl:text-xl">From : </label>
-                <input class="startDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50"
-                  type="date" required>
+                <input class="startDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
+                  required>
                 <label for=" endDate" class="font-bold xl:text-xl">To:</label>
-                <input class=" endDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50"
-                  type="date" required>
+                <input class=" endDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
+                  required>
               </div>
             </div>
           </div>
           <div class="addEXContainer flex justify-center">
-            <p
-              class="addEX text-white text-lg font-bold py-1 px-2 bg-green-600 rounded-md xl:text-xl cursor-pointer">Add
+            <p class="addEX text-white text-lg font-bold py-1 px-2 bg-green-600 rounded-md xl:text-xl cursor-pointer">
+              Add
               Experience</p>
           </div>
           <button type="submit" id="submitBtn"
@@ -152,7 +152,7 @@
       aria-hidden="true">
       <div
         class="w-90 h-100 xl:w-120 xl:h-150 2xl:w-150 2xl:180 bg-slate-300 rounded-md shadow-2xl flex justify-center items-center relative">
-        <div class="w-80 h-80 xl:w-110 xl:h-110 2xl:w-130 2xl:h-130  bg-white rounded-md">
+        <div id="listUnassigned" class="w-80 h-80 xl:w-110 xl:h-110 2xl:w-130 2xl:h-130  bg-white rounded-md flex flex-col items-center py-3 overflow-auto">
 
         </div>
         <div id="closeModalList"

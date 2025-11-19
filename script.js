@@ -8,11 +8,19 @@ const closeModalList = document.getElementById("closeModalList");
 const addExParent = document.querySelectorAll("exParent");
 const addex = document.querySelector(".addEX");
 let addExContainer = document.querySelector(".addEXContainer");
+let formData = JSON.parse(localStorage.getItem("formData")) || [];
 const experienceContainer = document.getElementById("exContainer");
 let photoUrl = document.getElementById("photoUrl");
-let formData = [];
+let roles ={
+  1: "IT technicien",
+  2: "Manager",
+  3: "Cleaner",
+  4: "Security",
+  5: "Receptionist",
+  6: "Visitor",
+}
+
 const submitBtn = document.getElementById("submitBtn");
-localStorage.setItem("formData", formData)
 
 addWorkers.addEventListener("click", () => {
   modalOpen.classList.replace("hidden", "flex");
@@ -236,7 +244,8 @@ submitBtn.addEventListener("click", (e) => {
           }
           formData.push(employeeData);
           localStorage.setItem("formData", JSON.stringify(formData));
-          
+          displayUnassigned();
+          displaylist();
           firstName.value = "";
           lastName.value = "";
           role.value = "";
@@ -249,7 +258,7 @@ submitBtn.addEventListener("click", (e) => {
           email.value = "";
           phone.value = "";
           if (experienceContainer.childElementCount > 1) {
-            experienceContainer.innerHTML =` <div class="exParent w-82 rounded-md bg-slate-200 flex flex-col gap-6 py-2 xl:w-102 xl:gap-8">
+            experienceContainer.innerHTML = ` <div class="exParent w-82 rounded-md bg-slate-200 flex flex-col gap-6 py-2 xl:w-102 xl:gap-8">
               <h1 class="text-xl font-bold text-center xl:text-2xl">Employee Experience :</h1>
               <div class="flex flex-col items-center gap-3 xl:gap-5">
                 <input class="bg-white py-3 pl-1.5 w-78 rounded-md text-sm xl:text-lg xl:w-85 company" type="text"
@@ -275,4 +284,54 @@ submitBtn.addEventListener("click", (e) => {
       }
     }
   }
-})  
+})
+function displayUnassigned() {
+  let storedEmployee = JSON.parse(localStorage.getItem("formData"));
+  storedEmployee.forEach(worker => {
+    const storedRoles = roles;
+    const workerRole = storedRoles[worker.role];
+    const workerDiv = document.createElement("div");
+    const unassignedList = document.getElementById("unassaignedContainer");
+    workerDiv.innerHTML = ` <div class="w-65 h-20 2xl:w-90 2xl:h-22 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between gap-5">
+            <div class="flex items-center gap-2">
+              <div class="w-17 h-17  bg-[#ffe8cf] rounded-full">
+                <img class="w-17 h-17 rounded-full" src="${worker.picture}" alt="employee">
+              </div>
+              <div class="flex flex-col">
+                <h1 class="text-base font-bold 2xl:text-lg">${worker.name}</h1>
+                <h3 class="text-sm 2xl:text-base">${workerRole}</h3>
+              </div>
+            </div>
+            <div class="w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
+              <p class="text-white font-bold text-2xl">+</p>
+            </div>`;
+            unassignedList.appendChild(workerDiv);
+  })
+}
+function displaylist() {
+  let storedEmployee = JSON.parse(localStorage.getItem("formData"));
+  storedEmployee.forEach(worker => {
+    const storedRoles = roles;
+    const workerRole = storedRoles[worker.role];
+    const workerDiv = document.createElement("div");
+    const listUnassigned = document.getElementById("listUnassigned");
+    workerDiv.innerHTML = ` <div class="w-70 h-20 xl:w-100 2xl:w-120 2xl:h-25 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between gap-5">
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-20  bg-[#ffe8cf] rounded-full">
+                <img class="w-20 h-20 rounded-full" src="${worker.picture}" alt="employee">
+              </div>
+              <div class="flex flex-col">
+                <h1 class="text-base font-bold 2xl:text-lg">${worker.name}</h1>
+                <h3 class="text-sm 2xl:text-base">${workerRole}</h3>
+              </div>
+            </div>
+            <div class="w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
+              <p class="text-white font-bold text-2xl">+</p>
+            </div>`;
+            listUnassigned.appendChild(workerDiv);
+  })
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  displayUnassigned(); 
+  displaylist();
+})
