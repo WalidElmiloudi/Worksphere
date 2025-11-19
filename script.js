@@ -11,7 +11,8 @@ let addExContainer = document.querySelector(".addEXContainer");
 let formData = JSON.parse(localStorage.getItem("formData")) || [];
 const experienceContainer = document.getElementById("exContainer");
 let photoUrl = document.getElementById("photoUrl");
-let roles ={
+let idCounter =0;
+let roles = {
   1: "IT technicien",
   2: "Manager",
   3: "Cleaner",
@@ -161,22 +162,26 @@ submitBtn.addEventListener("click", (e) => {
       }
     }
     if (experience.classList.contains("startDate")) {
-      start = experience.value;
-      count++;
-      startDates.push(experience.value);
+      if (experience.value) {
+        start = experience.value;
+        startDates.push(experience.value);
+        count++;
+      }
     }
     if (experience.classList.contains("endDate")) {
-      end = experience.value;
-      count++;
-      if (end < start) {
-        experience.classList.replace("bg-white", "bg-red-100");
-        count = 0;
-        alert("the dates are wrong");
-      } else {
-        if (experience.classList.contains("bg-red-100")) {
-          experience.classList.replace("bg-red-100", "bg-white");
+      if (experience.value) {
+        end = experience.value;
+        if (end < start) {
+          experience.classList.replace("bg-white", "bg-red-100");
+          count = 0;
+          alert("the dates are wrong");
+        } else {
+          if (experience.classList.contains("bg-red-100")) {
+            experience.classList.replace("bg-red-100", "bg-white");
+          }
+          endDates.push(experience.value);
+          count++;
         }
-        endDates.push(experience.value);
       }
     }
   })
@@ -240,12 +245,12 @@ submitBtn.addEventListener("click", (e) => {
               exRole: [...exRoles],
               startDate: [...startDates],
               enDate: [...endDates],
-            }
-          }
+            },
+            id:`${idCounter}`
+          };
           formData.push(employeeData);
           localStorage.setItem("formData", JSON.stringify(formData));
           displayUnassigned();
-          displaylist();
           firstName.value = "";
           lastName.value = "";
           role.value = "";
@@ -280,6 +285,7 @@ submitBtn.addEventListener("click", (e) => {
           experienceData.forEach(experience => {
             experience.value = "";
           })
+          idCounter++;
         }
       }
     }
@@ -287,51 +293,121 @@ submitBtn.addEventListener("click", (e) => {
 })
 function displayUnassigned() {
   let storedEmployee = JSON.parse(localStorage.getItem("formData"));
+  const unassignedList = document.getElementById("unassaignedContainer");
+  unassignedList.innerHTML = "";
   storedEmployee.forEach(worker => {
     const storedRoles = roles;
     const workerRole = storedRoles[worker.role];
     const workerDiv = document.createElement("div");
-    const unassignedList = document.getElementById("unassaignedContainer");
-    workerDiv.innerHTML = ` <div class="w-65 h-20 2xl:w-90 2xl:h-22 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between gap-5">
+    workerDiv.innerHTML = ` <div id="${worker.id}" class="w-65 h-20 2xl:w-90 2xl:h-22 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between">
             <div class="flex items-center gap-2">
               <div class="w-17 h-17  bg-[#ffe8cf] rounded-full">
                 <img class="w-17 h-17 rounded-full" src="${worker.picture}" alt="employee">
               </div>
               <div class="flex flex-col">
-                <h1 class="text-base font-bold 2xl:text-lg">${worker.name}</h1>
+                <h1 class="text-sm font-bold 2xl:text-lg">${worker.name}</h1>
                 <h3 class="text-sm 2xl:text-base">${workerRole}</h3>
               </div>
-            </div>
-            <div class="w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
-              <p class="text-white font-bold text-2xl">+</p>
             </div>`;
-            unassignedList.appendChild(workerDiv);
+    unassignedList.appendChild(workerDiv);
   })
 }
-function displaylist() {
-  let storedEmployee = JSON.parse(localStorage.getItem("formData"));
-  storedEmployee.forEach(worker => {
+function displaylist(workers) {
+  const listUnassigned = document.getElementById("listUnassigned");
+  let storedData = workers || [];
+  listUnassigned.innerHTML = "";
+    storedData.forEach(worker => {
     const storedRoles = roles;
     const workerRole = storedRoles[worker.role];
     const workerDiv = document.createElement("div");
-    const listUnassigned = document.getElementById("listUnassigned");
-    workerDiv.innerHTML = ` <div class="w-70 h-20 xl:w-100 2xl:w-120 2xl:h-25 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between gap-5">
+    workerDiv.innerHTML = ` <div id="worker-${worker.id}" class="worker w-70 h-20 xl:w-100 2xl:w-120 2xl:h-25 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between">
             <div class="flex items-center gap-2">
-              <div class="w-20 h-20  bg-[#ffe8cf] rounded-full">
-                <img class="w-20 h-20 rounded-full" src="${worker.picture}" alt="employee">
+              <div class="w-17 h-17  bg-[#ffe8cf] rounded-full">
+                <img class="w-full h-full rounded-full" src="${worker.picture}" alt="employee">
               </div>
               <div class="flex flex-col">
-                <h1 class="text-base font-bold 2xl:text-lg">${worker.name}</h1>
+                <h1 class="text-sm font-bold 2xl:text-lg">${worker.name}</h1>
                 <h3 class="text-sm 2xl:text-base">${workerRole}</h3>
               </div>
             </div>
-            <div class="w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
+            <div class="addBtn w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
               <p class="text-white font-bold text-2xl">+</p>
             </div>`;
-            listUnassigned.appendChild(workerDiv);
-  })
+    listUnassigned.appendChild(workerDiv);
+  }) 
 }
-document.addEventListener("DOMContentLoaded",()=>{
-  displayUnassigned(); 
+document.addEventListener("DOMContentLoaded", () => {
+  displayUnassigned();
   displaylist();
 })
+document.addEventListener("click",(e)=>{
+  if(e.target.classList.contains("inZoneAdd")){
+    const currentTarget = e.target;
+    const workerContainer = currentTarget.previousElementSibling;
+    const match =  currentTarget.className.match(/zone-([^\s]+)/);
+    let zone = match[1];
+    filterByRole(zone);
+    let zoneLimit = 5 ;
+    switch(zone){
+      case 0 : zoneLimit = 5;
+      break;
+      case 1 : zoneLimit = 4;
+      break;
+      case 2 : zoneLimit = 2;
+      break;
+      case 3 : zoneLimit = 9;
+      break;
+      case 4 : zoneLimit = 6;
+      break;
+      case 5 : zoneLimit = 2;
+      break;
+    }
+    const addBtns = document.querySelectorAll(".addBtn");
+    addBtns.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        if(workerContainer.childElementCount<zoneLimit){
+          const btnParent = btn.closest('.worker');
+        const match = btnParent.id.match(/worker-([^\s]+)/);
+        const workerId = match[1];
+        console.log(formData[workerId]);
+        const empDiv = document.createElement("div")
+        empDiv.innerHTML=`<div
+              class="w-5 h-7 bg-[#f7cea1]  rounded-br-md rounded-bl-md rounded-tr-lg rounded-tl-lg flex flex-col justify-center items-center relative">
+              <img class="rounded-full" src="${formData[workerId].picture}" alt="${formData[workerId].name} picture">
+              <button id="edit-${formData[workerId].id}" class="px-1 rounded-lg bg-green-600 text-white text-[5px]">Edit</button>
+              <div id="rm-${formData[workerId].id}"
+                class="w-1.5 h-1.5  pt-0.5 flex xl:w-12 xl:h-12 xl:pt-2 justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
+                <i class="fi fi-br-cross-small text-white text-[5px] xl:text-3xl"></i>
+              </div>
+            </div>`;
+        workerContainer.appendChild(empDiv);
+        formData.splice(workerId,1);
+        localStorage.setItem("formData", JSON.stringify(formData));
+        displayUnassigned();
+        filterByRole(zone);
+        }
+      })
+    })
+  }
+})
+function filterByRole(zone) {
+  if (zone == 0 || zone == 4) {
+    displaylist(formData);
+  }
+  if (zone == 1) {
+    const filtered = formData.filter(worker => (worker.role == 1 || worker.role == 3 || worker.role == 2));
+    displaylist(filtered);
+  }
+  if (zone == 2) {
+    const filtered = formData.filter(worker => (worker.role == 4 || worker.role == 3 || worker.role == 2));
+    displaylist(filtered);
+  }
+  if (zone == 3) {
+    const filtered = formData.filter(worker => (worker.role == 5 || worker.role == 3 || worker.role == 2 || worker.role == 6));
+    displaylist(filtered);
+  }
+  if (zone == 5) {
+    const filtered = formData.filter(worker => worker.role == 2 );
+    displaylist(filtered);
+  }
+}
