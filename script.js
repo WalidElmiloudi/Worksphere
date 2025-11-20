@@ -11,7 +11,7 @@ let addExContainer = document.querySelector(".addEXContainer");
 let formData = JSON.parse(localStorage.getItem("formData")) || [];
 const experienceContainer = document.getElementById("exContainer");
 let photoUrl = document.getElementById("photoUrl");
-let idCounter =0;
+let idCounter = 0;
 let roles = {
   1: "IT technicien",
   2: "Manager",
@@ -185,7 +185,6 @@ submitBtn.addEventListener("click", (e) => {
       }
     }
   })
-
   if (!nameRegex.test(firstName.value)) {
     firstName.classList.replace("bg-white", "bg-red-100");
   } else {
@@ -246,7 +245,7 @@ submitBtn.addEventListener("click", (e) => {
               startDate: [...startDates],
               enDate: [...endDates],
             },
-            id:`${idCounter}`
+            id: `${idCounter}`
           };
           formData.push(employeeData);
           localStorage.setItem("formData", JSON.stringify(formData));
@@ -292,7 +291,7 @@ submitBtn.addEventListener("click", (e) => {
   }
 })
 function displayUnassigned() {
-  let storedEmployee = JSON.parse(localStorage.getItem("formData"));
+  let storedEmployee = [...formData];
   const unassignedList = document.getElementById("unassaignedContainer");
   unassignedList.innerHTML = "";
   storedEmployee.forEach(worker => {
@@ -316,7 +315,7 @@ function displaylist(workers) {
   const listUnassigned = document.getElementById("listUnassigned");
   let storedData = workers || [];
   listUnassigned.innerHTML = "";
-    storedData.forEach(worker => {
+  storedData.forEach(worker => {
     const storedRoles = roles;
     const workerRole = storedRoles[worker.role];
     const workerDiv = document.createElement("div");
@@ -331,65 +330,75 @@ function displaylist(workers) {
               </div>
             </div>
             <div class="addBtn w-8 h-8 bg-blue-600 flex justify-center items-center rounded-md cursor-pointer">
-              <p class="text-white font-bold text-2xl">+</p>
+              <p class="text-white font-bold text-2xl pointer-events-none">+</p>
             </div>`;
     listUnassigned.appendChild(workerDiv);
-  }) 
+  })
 }
 document.addEventListener("DOMContentLoaded", () => {
   displayUnassigned();
   displaylist();
 })
-document.addEventListener("click",(e)=>{
-  if(e.target.classList.contains("inZoneAdd")){
-    const currentTarget = e.target;
-    const workerContainer = currentTarget.previousElementSibling;
-    const match =  currentTarget.className.match(/zone-([^\s]+)/);
+function handleAddWorker(e, workerContainer, zone, zoneLimit) {
+  const currentTarget = e.target;
+  if (currentTarget.classList.contains("addBtn")) {
+    console.log(workerContainer);
+    if (workerContainer.childElementCount < zoneLimit) {
+      const btnParent = currentTarget.closest('.worker');
+      const match = btnParent.id.match(/worker-([^\s]+)/);
+      const workerId = match[1];
+      const worker = formData.findIndex(data => data.id == workerId);
+      const empDiv = document.createElement("div")
+      empDiv.innerHTML = `<div
+          class=" assigned-worker w-5 h-7 xl:w-10 xl:h-13 bg-[#f7cea1]  rounded-br-md rounded-bl-md rounded-tr-lg rounded-tl-lg xl:rounded-br-lg xl:rounded-bl-lg xl:rounded-tr-2xl xl:rounded-tl-2xl flex flex-col justify-between items-center relative gap-1">
+          <img class="rounded-full -mt-0.5" src="${formData[worker].picture}" alt="${formData[worker].name} picture">
+          <button id="edit-${formData[worker].id}" class="px-1 rounded-lg bg-green-600 text-white text-[5px] xl:px-2.5 xl:rounded-br-lg cursor-pointer 2xl:text-[7px]">Edit</button>
+          <div id="rm-${formData[worker].id}"
+            class=" w-1.5 h-1.5  pt-0.5 flex xl:w-3 xl:h-3  justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
+            <i class="fi fi-br-cross-small text-white text-[5px] xl:text-[8px]"></i>
+          </div>
+        </div>`;
+      workerContainer.appendChild(empDiv);
+      formData.splice(worker, 1);
+      displayUnassigned();
+      filterByRole(zone);
+    }
+  }
+}
+
+let currentHandler = null;
+document.addEventListener("click", (e) => {
+  const currentBigTarget = e.target;
+  if (e.target.classList.contains("inZoneAdd")) {
+    const workerContainer = currentBigTarget.previousElementSibling;
+    console.log(workerContainer)
+    const match = currentBigTarget.className.match(/zone-([^\s]+)/);
     let zone = match[1];
     filterByRole(zone);
-    let zoneLimit = 5 ;
-    switch(zone){
-      case 0 : zoneLimit = 5;
-      break;
-      case 1 : zoneLimit = 4;
-      break;
-      case 2 : zoneLimit = 2;
-      break;
-      case 3 : zoneLimit = 9;
-      break;
-      case 4 : zoneLimit = 6;
-      break;
-      case 5 : zoneLimit = 2;
-      break;
+    let zoneLimit = 5;
+    switch (zone) {
+      case '0': zoneLimit = 5;
+        break;
+      case '1': zoneLimit = 4;
+        break;
+      case '2': zoneLimit = 2;
+        break;
+      case '3': zoneLimit = 9;
+        break;
+      case '4': zoneLimit = 6;
+        break;
+      case '5': zoneLimit = 2;
+        break;
     }
-    const addBtns = document.querySelectorAll(".addBtn");
-    addBtns.forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        if(workerContainer.childElementCount<zoneLimit){
-          const btnParent = btn.closest('.worker');
-        const match = btnParent.id.match(/worker-([^\s]+)/);
-        const workerId = match[1];
-        console.log(formData[workerId]);
-        const empDiv = document.createElement("div")
-        empDiv.innerHTML=`<div
-              class="w-5 h-7 bg-[#f7cea1]  rounded-br-md rounded-bl-md rounded-tr-lg rounded-tl-lg flex flex-col justify-center items-center relative">
-              <img class="rounded-full" src="${formData[workerId].picture}" alt="${formData[workerId].name} picture">
-              <button id="edit-${formData[workerId].id}" class="px-1 rounded-lg bg-green-600 text-white text-[5px]">Edit</button>
-              <div id="rm-${formData[workerId].id}"
-                class="w-1.5 h-1.5  pt-0.5 flex xl:w-12 xl:h-12 xl:pt-2 justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
-                <i class="fi fi-br-cross-small text-white text-[5px] xl:text-3xl"></i>
-              </div>
-            </div>`;
-        workerContainer.appendChild(empDiv);
-        formData.splice(workerId,1);
-        localStorage.setItem("formData", JSON.stringify(formData));
-        displayUnassigned();
-        filterByRole(zone);
-        }
-      })
-    })
+
+    if (currentHandler) {
+      document.removeEventListener("click", currentHandler);
+    }
+    currentHandler = (e) => handleAddWorker(e, workerContainer, zone, zoneLimit);
+    document.addEventListener("click", currentHandler);
   }
 })
+
 function filterByRole(zone) {
   if (zone == 0 || zone == 4) {
     displaylist(formData);
@@ -407,7 +416,7 @@ function filterByRole(zone) {
     displaylist(filtered);
   }
   if (zone == 5) {
-    const filtered = formData.filter(worker => worker.role == 2 );
+    const filtered = formData.filter(worker => worker.role == 2);
     displaylist(filtered);
   }
 }
