@@ -9,6 +9,8 @@ const addExParent = document.querySelectorAll("exParent");
 const addex = document.querySelector(".addEX");
 let addExContainer = document.querySelector(".addEXContainer");
 let formData = JSON.parse(localStorage.getItem("formData")) || [];
+let backupData = [...formData];
+const unassignedList = document.getElementById("unassaignedContainer");
 const experienceContainer = document.getElementById("exContainer");
 let photoUrl = document.getElementById("photoUrl");
 let idCounter = 0;
@@ -20,8 +22,9 @@ let roles = {
   5: "Receptionist",
   6: "Visitor",
 }
-
+let unassaignedworker = document.getElementById("unassignedWorker");
 const submitBtn = document.getElementById("submitBtn");
+
 
 addWorkers.addEventListener("click", () => {
   modalOpen.classList.replace("hidden", "flex");
@@ -290,27 +293,29 @@ submitBtn.addEventListener("click", (e) => {
     }
   }
 })
+
 function displayUnassigned() {
   let storedEmployee = [...formData];
-  const unassignedList = document.getElementById("unassaignedContainer");
   unassignedList.innerHTML = "";
   storedEmployee.forEach(worker => {
     const storedRoles = roles;
     const workerRole = storedRoles[worker.role];
     const workerDiv = document.createElement("div");
-    workerDiv.innerHTML = ` <div id="${worker.id}" class="w-65 h-20 2xl:w-90 2xl:h-22 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-17 h-17  bg-[#ffe8cf] rounded-full">
-                <img class="w-17 h-17 rounded-full" src="${worker.picture}" alt="employee">
+    workerDiv.innerHTML = ` <div id="${worker.id}" class="worker w-65 h-20 2xl:w-90 2xl:h-22 bg-[#f7cea1] rounded-lg flex flex-row items-center px-2 2xl:px-4 justify-between cursor-pointer">
+            <div class="flex items-center gap-2 pointer-events-none">
+              <div class="w-17 h-17  bg-[#ffe8cf] rounded-full pointer-events-none">
+                <img class="w-17 h-17 rounded-full pointer-events-none" src="${worker.picture}" alt="employee">
               </div>
-              <div class="flex flex-col">
-                <h1 class="text-sm font-bold 2xl:text-lg">${worker.name}</h1>
-                <h3 class="text-sm 2xl:text-base">${workerRole}</h3>
+              <div class="flex flex-col pointer-events-none">
+                <h1 class="text-sm font-bold 2xl:text-lg pointer-events-none">${worker.name}</h1>
+                <h3 class="text-sm 2xl:text-base pointer-events-none">${workerRole}</h3>
               </div>
             </div>`;
     unassignedList.appendChild(workerDiv);
+    unassignedCounter();
   })
 }
+
 function displaylist(workers) {
   const listUnassigned = document.getElementById("listUnassigned");
   let storedData = workers || [];
@@ -335,6 +340,7 @@ function displaylist(workers) {
     listUnassigned.appendChild(workerDiv);
   })
 }
+
 document.addEventListener("DOMContentLoaded", () => {
   displayUnassigned();
   displaylist();
@@ -342,24 +348,23 @@ document.addEventListener("DOMContentLoaded", () => {
 function handleAddWorker(e, workerContainer, zone, zoneLimit) {
   const currentTarget = e.target;
   if (currentTarget.classList.contains("addBtn")) {
-    console.log(workerContainer);
     if (workerContainer.childElementCount < zoneLimit) {
       const btnParent = currentTarget.closest('.worker');
       const match = btnParent.id.match(/worker-([^\s]+)/);
       const workerId = match[1];
       const worker = formData.findIndex(data => data.id == workerId);
       const empDiv = document.createElement("div")
-      empDiv.innerHTML = `<div
-          class=" assigned-worker w-5 h-7 xl:w-10 xl:h-13 bg-[#f7cea1]  rounded-br-md rounded-bl-md rounded-tr-lg rounded-tl-lg xl:rounded-br-lg xl:rounded-bl-lg xl:rounded-tr-2xl xl:rounded-tl-2xl flex flex-col justify-between items-center relative gap-1">
-          <img class="rounded-full -mt-0.5" src="${formData[worker].picture}" alt="${formData[worker].name} picture">
-          <button id="edit-${formData[worker].id}" class="px-1 rounded-lg bg-green-600 text-white text-[5px] xl:px-2.5 xl:rounded-br-lg cursor-pointer 2xl:text-[7px]">Edit</button>
+      empDiv.innerHTML = `<div id="${formData[worker].id}"
+          class=" assigned-worker inZone-${zone} worker w-7 h-7 xl:w-12 xl:h-12 bg-[#f7cea1]  rounded-full flex flex-col justify-center items-center relative">
+          <img class="w-full h-full rounded-full -mt-0.5 pointer-events-none" src="${formData[worker].picture}" alt="${formData[worker].name} picture">
           <div id="rm-${formData[worker].id}"
-            class=" w-1.5 h-1.5  pt-0.5 flex xl:w-3 xl:h-3  justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
-            <i class="fi fi-br-cross-small text-white text-[5px] xl:text-[8px]"></i>
+            class="remover w-1.5 h-1.5  pt-0.5 flex xl:w-3 xl:h-3  justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
+            <i class="fi fi-br-cross-small text-white text-[5px] xl:text-[8px] pointer-events-none"></i>
           </div>
         </div>`;
       workerContainer.appendChild(empDiv);
       formData.splice(worker, 1);
+      redZoneAlert();
       displayUnassigned();
       filterByRole(zone);
     }
@@ -419,4 +424,131 @@ function filterByRole(zone) {
     const filtered = formData.filter(worker => worker.role == 2);
     displaylist(filtered);
   }
+}
+function profile(index,location) {
+  const mainContainer = document.querySelector('main');
+  let role = roles[backupData[index].role];
+  const sectionProfile = document.createElement("section");
+  sectionProfile.classList.add("profileLay", "w-full", "h-screen", "fixed", "bg-black/20", "flex", "justify-center", "items-center");
+  sectionProfile.innerHTML = `
+      <div class="w-80 h-170 bg-[#f7cea1] rounded-md flex flex-col items-center py-2 relative">
+        <div class="flex w-70 h-25 bg-[#fdd8b1] rounded-lg relative">
+          <div class="w-30 h-30 bg-[#ffc281] rounded-full absolute -bottom-15 left-0 right-0 m-auto shadow-lg">
+            <img class="w-full h-full rounded-full" src="${backupData[index].picture}" alt="${backupData[index].name} picture">
+          </div>
+        </div>
+        <div class="mt-18 flex flex-col items-center">
+          <h1 class="text-2xl font-bold">${backupData[index].name}</h1>
+          <h2 class="text-xl font-bold text-[#424242]">${role}</h2>
+        </div>
+        <p class="text-lg font-bold mb-4 text-center">Current location : <br><span class="text-md text-green-600">${location}</span></p>
+        <div class="py-2 px-2 border rounded-md flex flex-col items-center gap-5 bg-[#ffa340]/20 w-70 h-90">
+          <h1 class="text-xl font-bold text-center">Worker Informations</h1>
+          <div class="flex flex-col items-start w-60  gap-2">
+            <p class="text-md font-bold">Email : <span class="font-normal">${backupData[index].email}</span></p>
+            <p class="text-md font-bold">Phone : <span class="font-normal">${backupData[index].phone}</span></p>
+          </div>
+          <div class="w-60 border py-4 flex flex-col items-center rounded-md bg-[#eac59e] shadow-lg gap-2">
+            <h1 class="text-md font-bold text-center">Worker Experience</h1>
+            <div id="expContainer" class="w-55 h-35 flex flex-col items-center overflow-scroll [scrollbar-width:none] gap-2">
+              
+            </div>
+          </div>
+        </div>
+        <div id="closeProfile" class=" absolute w-6 h-6 bg-red-600 rounded-full flex justify-center items-center -top-1 -right-1 cursor-pointer">
+          <p class="text-white font-bold text-md pointer-events-none">X</p>
+        </div>
+      </div>`;
+  mainContainer.appendChild(sectionProfile);
+  const expContainer = document.getElementById("expContainer");
+  let loopLimit = backupData[index].experience.companies.length;
+  let company = backupData[index].experience.companies;
+  let EXRole = backupData[index].experience.exRole;
+  let startDATE = backupData[index].experience.startDate;
+  let endDATE = backupData[index].experience.enDate;
+
+  for (let i = 0; i < loopLimit; i++) {
+    const expDiv = document.createElement("div");
+    expDiv.classList.add("w-50", "h-30", "border", "px-5", "py-2", "rounded-md", "flex", "flex-col", "justify-center")
+    expDiv.innerHTML = `
+              <p class="text-md font-bold">Company : <span class="font-normal">${company[i]}</span></p>
+              <p class="text-md font-bold">Role : <span class="font-normal">${EXRole[i]}</span></p>
+              <p class="text-md font-bold">From : <span class="font-normal">${startDATE[i]}</span></p>
+              <p class="text-md font-bold">To : <span class="font-normal">${endDATE[i]}</span></p>
+`;
+    expContainer.appendChild(expDiv);
+  }
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("worker")) {
+    let workerID = e.target.id;
+    let location = "Unassigned";
+    if(e.target.classList.contains("assigned-worker")){
+      const currentTarget = e.target;
+      let match = currentTarget.className.match(/inZone-([^\s]+)/);
+      let locationCode = match[1];
+      switch(locationCode){
+        case '0' : location = "Conference Room";
+        break;
+        case '1' : location = "Server Room";
+        break;
+        case '2' : location = "Security Room";
+        break;
+        case '3' : location = "Reception Hall";
+        break;
+        case '4' : location = "Staff Room";
+        break;
+        case '5' : location = "Archives";
+        break;
+      }
+    }
+    let index = backupData.findIndex(data => data.id == workerID);
+    profile(index,location);
+    const closeProfile = document.getElementById("closeProfile");
+    const profileLay = document.querySelector(".profileLay");
+    closeProfile.addEventListener("click", () => {
+    profileLay.remove();
+    })
+    document.addEventListener("click",(e)=>{
+      if(e.target.classList.contains("profileLay")){
+        profileLay.remove();
+      }
+    })
+    document.addEventListener("keydown",(e)=>{
+      if(e.key == 'Escape'){
+        profileLay.remove();
+      }
+    })
+  }
+})
+document.addEventListener("click",(e)=>{
+  if(e.target.classList.contains("remover")){
+    let match = e.target.id.match(/rm-([^\s]+)/);
+    let targetId = match[1];
+    e.target.closest(".assigned-worker").remove();
+    const removedWorker = backupData.find(data => data.id == targetId);
+    formData.push(removedWorker);
+    displayUnassigned();
+    redZoneAlert();
+  }
+})
+function unassignedCounter(){
+  let counter = 0;
+  counter = formData.length;
+  unassaignedworker.innerHTML = counter;
+  console.log(counter);
+}
+function redZoneAlert(){
+  const redZones = document.querySelectorAll(".attentionZones");
+  redZones.forEach(redZone=>{
+    const container = redZone.parentNode;
+    if(redZone.childElementCount>0){
+      container.classList.remove("bg-red-600/50");
+    } else{
+      if(!(container.classList.contains("bg-red-600/50"))){
+        container.classList.add("bg-red-600/50");
+      }
+    }
+  })
 }
