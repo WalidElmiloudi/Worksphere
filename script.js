@@ -278,8 +278,8 @@ submitBtn.addEventListener("click", (e) => {
           if (workerPhoto) {
             photoUrl.value = "";
             const img = document.getElementById("imgUrl");
-            img.src = "";
-            img.alt = "";
+            img.src = "https://intranet.youcode.ma/storage/users/profile/0.jpg";
+            img.alt = "employer picture";
           }
           email.value = "";
           phone.value = "";

@@ -18,7 +18,7 @@
 <body class="font-['open_sans']">
   <main class="w-full h-screen flex flex-col xl:flex-row gap-0.5">
     <!-- IMAGE AND ZONES SECTION -->
-    <section class="  relative w-full h-100 md:w-screen md:h-screen xl:w-700 xl:h-screen 2xl:w-1400">
+    <div class="  relative w-full h-100 md:w-screen md:h-screen xl:w-700 xl:h-screen 2xl:w-1400">
       <img class="w-full h-full" src="img/floor.jpg" alt="the company floor">
       <div class="grid grid-cols-13 grid-rows-6 w-full h-full absolute gap-x-2 top-0">
         <div class=" col-span-5 row-span-2 mt-1 ml-1 relative flex justify-center items-center">
@@ -72,7 +72,7 @@
             class="inZoneAdd zone-5 w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-4 xl:left-24 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-6 2xl:left-40 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-2 left-9 cursor-pointer">+</button>
         </div>
       </div>
-    </section>
+    </div>
     <!-- UNASSIGNED LIST SECTION -->
     <section class="bg-[#c2996d] w-full h-full flex justify-center items-center">
       <div
@@ -94,13 +94,12 @@
     <section id="modal" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
       aria-hidden="true">
       <div id="modalForum"
-        class="w-90 h-175 xl:w-120 xl:h-180  bg-slate-300 rounded-lg shadow-2xl flex flex-col items-center py-5 gap-3 xl:gap-5 relative"
-        aria-modal="true">
+        class="w-90 h-175 xl:w-120 xl:h-180  bg-slate-300 rounded-lg shadow-2xl flex flex-col items-center py-5 gap-3 xl:gap-5 relative">
         <h1 class="text-2xl xl:text-3xl font-bold">Employee Information :</h1>
         <form id="newWorkerForm"
           class="w-full h-full flex flex-col items-center gap-3 overflow-y-scroll [scrollbar-width:none] xl:gap-5">
           <div class="flex flex-row justify-center gap-2">
-            <input id="firstName" class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text"
+            <input class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text"
               id="firstName" placeholder="First Name" required>
             <input class="bg-white py-3 pl-1.5 w-40 rounded-md text-sm xl:text-lg xl:w-50" type="text" id="lastName"
               placeholder="Last Name" required>
@@ -117,9 +116,9 @@
           </select>
           <div class="flex flex-col gap-3">
             <input id="photoUrl" class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="url"
-              id="photo" placeholder="ex : http://xxxx.png">
+             placeholder="ex : http://xxxx.png">
             <div id="photoZone" class="w-20 h-20 xl:w-30 xl:h-30 bg-white rounded-full overflow-hidden">
-              <img id="imgUrl" src="" alt="">
+              <img id="imgUrl" src="https://intranet.youcode.ma/storage/users/profile/0.jpg" alt="employer picture">
             </div>
           </div>
           <input class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="email" id="email"
@@ -138,10 +137,10 @@
               </div>
               <div class="flex flex-col pl-2 xl:pl-9">
                 <label for="startDate" class="font-bold xl:text-xl">From : </label>
-                <input class="startDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
+                <input id="startDate" class="startDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
                   required>
-                <label for=" endDate" class="font-bold xl:text-xl">To:</label>
-                <input class=" endDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
+                <label for="endDate" class="font-bold xl:text-xl">To:</label>
+                <input id="endDate" class="endDate w-35 bg-white rounded-md text-xs py-1.5 px-2.5 xl:text-lg xl:w-50" type="date"
                   required>
               </div>
             </div>
@@ -162,7 +161,7 @@
       </div>
     </section>
     <!-- ADD IN-ZONE WORKERS MODAL -->
-    <section id="employeeList" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
+    <div id="employeeList" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
       aria-hidden="true">
       <div
         class="w-90 h-100 xl:w-120 xl:h-150 2xl:w-150 2xl:180 bg-slate-300 rounded-md shadow-2xl flex justify-center items-center relative">
@@ -175,7 +174,7 @@
           <i class="fi fi-br-cross-small text-white text-2xl xl:text-3xl"></i>
         </div>
       </div>
-    </section>
+    </div>
   </main>
   <script src="script.js"></script>
 </body>
