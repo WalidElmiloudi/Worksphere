@@ -1,10 +1,11 @@
-const addWorkers = document.getElementById("addNewWorker");
-const modalOpen = document.getElementById("modal");
-const closeModal = document.getElementById("closeModal")
+//DECLARATION OF VARIABLES
+const addWorkers = document.getElementById("addNewWorker"); // ADD NEW WORKER BUTTON IN UNASSIGNED LIST SECTION
+const modalOpen = document.getElementById("modal");// THE SECTION OF ADDING NEW WORKER MODAL
+const closeModal = document.getElementById("closeModal")// CLOSE BUTTON IN THE SECTION OF ADDING NEW WORKER MODAL
 const modal = document.getElementById("modalForum");
-const addUnassigned = document.querySelectorAll(".inZoneAdd");
-const employeeList = document.getElementById("employeeList");
-const closeModalList = document.getElementById("closeModalList");
+const addUnassigned = document.querySelectorAll(".inZoneAdd");// ADD BUTTONS IN THE ROOMS
+const employeeList = document.getElementById("employeeList");// ADD IN-ZONE WORKERS MODAL
+const closeModalList = document.getElementById("closeModalList");// CLOSE BUTTON IN ADD IN-ZONE WORKERS MODAL
 const addExParent = document.querySelectorAll("exParent");
 const addex = document.querySelector(".addEX");
 let addExContainer = document.querySelector(".addEXContainer");
@@ -13,7 +14,7 @@ let backupData = [...formData];
 const unassignedList = document.getElementById("unassaignedContainer");
 const experienceContainer = document.getElementById("exContainer");
 let photoUrl = document.getElementById("photoUrl");
-let idCounter = 0;
+let idCounter = localStorage.getItem("id") || 0;
 let roles = {
   1: "IT technicien",
   2: "Manager",
@@ -24,55 +25,60 @@ let roles = {
 }
 let unassaignedworker = document.getElementById("unassignedWorker");
 const submitBtn = document.getElementById("submitBtn");
+let currentHandler = null;
 
-
+//ADDING AN EVENT LISTENER ON THE ADD NEW WORKER BUTTON TO SHOW THE ADDING NEW WORKER MODAL
 addWorkers.addEventListener("click", () => {
   modalOpen.classList.replace("hidden", "flex");
   modalOpen.setAttribute("aria-hidden", "false");
   modal.focus();
 })
-
+//ADDING AN EVENT LISTENER ON THE MODAL SECTION TO CLOSE THE MODAL WHEN I CLICK ON AN ELEMENT THAT CONTAINS AN OVERLAY CLASS
 modalOpen.addEventListener("click", (e) => {
   if (e.target.classList.contains('overlay')) {
     modalOpen.classList.replace("flex", "hidden");
     modalOpen.setAttribute("aria-hidden", "true");
   }
 })
+//ADDING AN EVENT LISTENER ON CLOSE BUTTON IN THE ADDING NEW WORKER MODAL TO CLOSE IT WHEN I CLICK ON IT
 closeModal.addEventListener("click", () => {
   modalOpen.classList.replace("flex", "hidden");
   modalOpen.setAttribute("aria-hidden", "true");
 })
+//ADDING AN EVENT LISTENER ON THE DOCUMENT TO CLOSE THE ADDING NEW WORKER MODAL WHEN I PRESS THE ESC KEY IN THE KEBOARD
 document.addEventListener("keydown", (e) => {
   if (e.key == 'Escape') {
     modalOpen.classList.replace("flex", "hidden");
     modalOpen.setAttribute("aria-hidden", "true");
   }
 })
-
+// GOING TROUGH THE NODELIST AND ADDING AN EVENT LISTENER TO SHOW THE MODAL WHEN I CLICK ON A NODE
 addUnassigned.forEach(add => {
-
   add.addEventListener("click", () => {
     employeeList.classList.replace("hidden", "flex");
     employeeList.setAttribute("aria-hidden", "false");
   })
 })
+// CLOSING THE MODAL WHEN I CLICK ON THE CLOSE BUTTON
 closeModalList.addEventListener("click", () => {
   employeeList.classList.replace("flex", "hidden");
   employeeList.setAttribute("aria-hidden", "true");
 })
+// CLOSING THE MODAL WHEN I CLICK OUT OF THE MODAL
 employeeList.addEventListener("click", (e) => {
   if (e.target.classList.contains('overlay')) {
     employeeList.classList.replace("flex", "hidden");
     employeeList.setAttribute("aria-hidden", "true");
   }
 })
+// CLOSING THE MODAL WHEN I PRESS THE ESC KEY
 document.addEventListener("keydown", (e) => {
   if (e.key == 'Escape') {
     employeeList.classList.replace("flex", "hidden");
     employeeList.setAttribute("aria-hidden", "true");
   }
 })
-
+// ADDING AN EVENT LISTENER ON THE ADD EXPERIENCE BUTTON TO ADD NEW EXPERIENCE FORM
 addex.addEventListener("click", () => {
   const newDiv = document.createElement('div');
   newDiv.classList.add("exParent");
@@ -98,13 +104,13 @@ addex.addEventListener("click", () => {
           </div>`;
   experienceContainer.appendChild(newDiv);
 })
-
+//DELETING THE EXPERIENCE FORM WHEN I CLICK ON THE DELETE BUTTON
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("deleteEx")) {
     e.target.closest(".exParent").remove();
   }
 })
-
+//PREVISUALISATION IMAGE FOR THE INPUT THAT THE USER TYPE
 photoUrl.addEventListener("input", () => {
   if (photoUrl.value) {
     const img = document.getElementById("imgUrl");
@@ -113,11 +119,12 @@ photoUrl.addEventListener("input", () => {
     img.alt = "employee photo";
   }
 })
-
+//CHECKING THE VALIDITY OF EACH INPUT AND THE DIFFRENCE IN EXPERIENCE'S FROM TO DATES AND COLLECTING THE USER INPUTS WHEN IT'S VALIDATED
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
+  let workerPhoto = photoUrl.value.trim();
   const nameRegex = /^[a-zA-Z\s]+$/;
   const role = document.getElementById("role");
   const phtoUrlRegex = /^(https?:\/\/)[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[^\s]*)?$/i;
@@ -126,7 +133,7 @@ submitBtn.addEventListener("click", (e) => {
   const phoneNum = document.getElementById("phone");
   const phoneRegex = /^0(6|5|7|8)[0-9]{8}$/;
   let experienceData = document.querySelectorAll(".exParent input");
-  const companyRegex = /^[a-zA-Z0-9._-]{1,}$/;
+  const companyRegex = /^[a-zA-Z0-9\s._-]{1,}$/;
   const exRoleRegex = /^[a-zA-Z\s._-]+$/;
 
   let companies = [];
@@ -142,18 +149,20 @@ submitBtn.addEventListener("click", (e) => {
     if (experience.classList.contains("company")) {
       if (!companyRegex.test(experience.value)) {
         experience.classList.replace("bg-white", "bg-red-100");
+        alert("Check your Worker's Experience's Company Name");
         count = 0;
       } else {
         if (experience.classList.contains("bg-red-100")) {
           experience.classList.replace("bg-red-100", "bg-white");
         }
         count++;
-        companies.push(experience.value);
+        companies.push(experience.value.trim());
       }
     }
     if (experience.classList.contains("exRole")) {
       if (!exRoleRegex.test(experience.value)) {
         experience.classList.replace("bg-white", "bg-red-100");
+        alert("Check your Worker's Experience's Role");
         count = 0;
 
       } else {
@@ -161,7 +170,7 @@ submitBtn.addEventListener("click", (e) => {
           experience.classList.replace("bg-red-100", "bg-white");
         }
         count++;
-        exRoles.push(experience.value);
+        exRoles.push(experience.value.trim());
       }
     }
     if (experience.classList.contains("startDate")) {
@@ -177,7 +186,7 @@ submitBtn.addEventListener("click", (e) => {
         if (end < start) {
           experience.classList.replace("bg-white", "bg-red-100");
           count = 0;
-          alert("the dates are wrong");
+          alert("Check your Worker's Experience's Dates");
         } else {
           if (experience.classList.contains("bg-red-100")) {
             experience.classList.replace("bg-red-100", "bg-white");
@@ -185,11 +194,14 @@ submitBtn.addEventListener("click", (e) => {
           endDates.push(experience.value);
           count++;
         }
+      } else {
+        alert("Check your Worker's Experience's Dates");
       }
     }
   })
   if (!nameRegex.test(firstName.value)) {
     firstName.classList.replace("bg-white", "bg-red-100");
+    alert("Check your Worker's First Name");
   } else {
     if (firstName.classList.contains("bg-red-100")) {
       firstName.classList.replace("bg-red-100", "bg-white");
@@ -197,6 +209,7 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!nameRegex.test(lastName.value)) {
     lastName.classList.replace("bg-white", "bg-red-100");
+    alert("Check your Worker's Last Name");
   } else {
     if (lastName.classList.contains("bg-red-100")) {
       lastName.classList.replace("bg-red-100", "bg-white");
@@ -204,44 +217,50 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!role.value) {
     role.classList.replace("bg-white", "bg-red-100");
+    alert("Check your Worker's Role");
   } else {
     if (role.classList.contains("bg-red-100")) {
       role.classList.replace("bg-red-100", "bg-white");
     }
   }
-  if (photoUrl.value) {
-    if (!phtoUrlRegex.test(photoUrl.value)) {
+  if (workerPhoto) {
+    if (!phtoUrlRegex.test(workerPhoto)) {
       photoUrl.classList.replace("bg-white", "bg-red-100");
+      alert("Check your Worker's Photo's Url");
     } else {
       if (photoUrl.classList.contains("bg-red-100")) {
         photoUrl.classList.replace("bg-red-100", "bg-white");
       }
     }
+  } else {
+    workerPhoto = 'https://intranet.youcode.ma/storage/users/profile/0.jpg';
   }
   if (!emailRegex.test(email.value)) {
     email.classList.replace("bg-white", "bg-red-100");
+    alert("Check your Worker's Email");
   } else {
     if (email.classList.contains("bg-red-100")) {
       email.classList.replace("bg-red-100", "bg-white");
     }
   }
-  if (!phoneRegex.test(phoneNum.value)) {
+  if (!phoneRegex.test(phoneNum.value.trim())) {
     phoneNum.classList.replace("bg-white", "bg-red-100");
+    alert("Check your Worker's Phone Number");
   } else {
     if (phoneNum.classList.contains("bg-red-100")) {
       phoneNum.classList.replace("bg-red-100", "bg-white");
     }
   }
   if ((phoneRegex.test(phoneNum.value)) && (emailRegex.test(email.value)) && (role.value) && (nameRegex.test(firstName.value)) && (nameRegex.test(lastName.value))) {
-    if (photoUrl.value) {
-      if (phtoUrlRegex.test(photoUrl.value)) {
+    if (workerPhoto) {
+      if (phtoUrlRegex.test(workerPhoto)) {
         if (count == experienceData.length) {
           const employeeData = {
-            name: `${firstName.value}` + " " + `${lastName.value}`,
+            name: `${firstName.value.trim()}` + " " + `${lastName.value.trim()}`,
             role: `${role.value}`,
-            picture: `${photoUrl.value}`,
-            email: `${email.value}`,
-            phone: `${phoneNum.value}`,
+            picture: `${workerPhoto}`,
+            email: `${email.value.trim()}`,
+            phone: `${phoneNum.value.trim()}`,
             experience: {
               companies: [...companies],
               exRole: [...exRoles],
@@ -256,7 +275,7 @@ submitBtn.addEventListener("click", (e) => {
           firstName.value = "";
           lastName.value = "";
           role.value = "";
-          if (photoUrl.value) {
+          if (workerPhoto) {
             photoUrl.value = "";
             const img = document.getElementById("imgUrl");
             img.src = "";
@@ -288,12 +307,13 @@ submitBtn.addEventListener("click", (e) => {
             experience.value = "";
           })
           idCounter++;
+          localStorage.setItem("id", idCounter);
         }
       }
     }
   }
 })
-
+//DISPLAYING THE NEW WORKERS IN THE UNASSIGNED LIST
 function displayUnassigned() {
   let storedEmployee = [...formData];
   unassignedList.innerHTML = "";
@@ -315,7 +335,7 @@ function displayUnassigned() {
     unassignedCounter();
   })
 }
-
+//DISPLAYING PERMITTED WORKERS FOR EACH ZONE
 function displaylist(workers) {
   const listUnassigned = document.getElementById("listUnassigned");
   let storedData = workers || [];
@@ -338,24 +358,26 @@ function displaylist(workers) {
               <p class="text-white font-bold text-2xl pointer-events-none">+</p>
             </div>`;
     listUnassigned.appendChild(workerDiv);
+    unassignedCounter();
   })
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   displayUnassigned();
   displaylist();
+  unassignedCounter();
 })
+//ADD THE CHOSEN WORKER IN THE CHOSEN ZONE
 function handleAddWorker(e, workerContainer, zone, zoneLimit) {
   const currentTarget = e.target;
   if (currentTarget.classList.contains("addBtn")) {
     if (workerContainer.childElementCount < zoneLimit) {
-      const btnParent = currentTarget.closest('.worker');
+      const btnParent = currentTarget.parentNode;
       const match = btnParent.id.match(/worker-([^\s]+)/);
       const workerId = match[1];
       const worker = formData.findIndex(data => data.id == workerId);
       const empDiv = document.createElement("div")
       empDiv.innerHTML = `<div id="${formData[worker].id}"
-          class=" assigned-worker inZone-${zone} worker w-7 h-7 xl:w-12 xl:h-12 bg-[#f7cea1]  rounded-full flex flex-col justify-center items-center relative">
+          class=" assigned-worker inZone-${zone} worker w-7 h-7 xl:w-12 xl:h-12 bg-[#f7cea1]  rounded-full flex flex-col justify-center items-center relative xl:scale-150 2xl:scale-200">
           <img class="w-full h-full rounded-full -mt-0.5 pointer-events-none" src="${formData[worker].picture}" alt="${formData[worker].name} picture">
           <div id="rm-${formData[worker].id}"
             class="remover w-1.5 h-1.5  pt-0.5 flex xl:w-3 xl:h-3  justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
@@ -367,16 +389,15 @@ function handleAddWorker(e, workerContainer, zone, zoneLimit) {
       redZoneAlert();
       displayUnassigned();
       filterByRole(zone);
+      unassignedCounter();
     }
   }
 }
-
-let currentHandler = null;
+//ADDING AN EVENT LISTENER ON THE DOCUMENT TO CHECK IF THE TARGET CLASSLIST CONTAINS INZONEADD TO SHOW THE PERMITTED WORKERS TO ADD
 document.addEventListener("click", (e) => {
   const currentBigTarget = e.target;
   if (e.target.classList.contains("inZoneAdd")) {
     const workerContainer = currentBigTarget.previousElementSibling;
-    console.log(workerContainer)
     const match = currentBigTarget.className.match(/zone-([^\s]+)/);
     let zone = match[1];
     filterByRole(zone);
@@ -390,7 +411,7 @@ document.addEventListener("click", (e) => {
         break;
       case '3': zoneLimit = 9;
         break;
-      case '4': zoneLimit = 6;
+      case '4': zoneLimit = 4;
         break;
       case '5': zoneLimit = 2;
         break;
@@ -403,7 +424,7 @@ document.addEventListener("click", (e) => {
     document.addEventListener("click", currentHandler);
   }
 })
-
+//A FUNCTION TO FILTER THE WORKERS THAT WILL APPEARS WHEN I CLICK ON ZONE ADD BUTTON
 function filterByRole(zone) {
   if (zone == 0 || zone == 4) {
     displaylist(formData);
@@ -425,7 +446,8 @@ function filterByRole(zone) {
     displaylist(filtered);
   }
 }
-function profile(index,location) {
+// A FUNCTION THAT SHOW THE PROFILE OF THE WORKER WITH THEIR CURRENT LOCATION
+function profile(index, location) {
   const mainContainer = document.querySelector('main');
   let role = roles[backupData[index].role];
   const sectionProfile = document.createElement("section");
@@ -479,76 +501,78 @@ function profile(index,location) {
     expContainer.appendChild(expDiv);
   }
 }
-
+// ADDING AN EVENT LISTENER TO SHOW WORKER'S PROFILE
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("worker")) {
     let workerID = e.target.id;
     let location = "Unassigned";
-    if(e.target.classList.contains("assigned-worker")){
+    if (e.target.classList.contains("assigned-worker")) {
       const currentTarget = e.target;
       let match = currentTarget.className.match(/inZone-([^\s]+)/);
       let locationCode = match[1];
-      switch(locationCode){
-        case '0' : location = "Conference Room";
-        break;
-        case '1' : location = "Server Room";
-        break;
-        case '2' : location = "Security Room";
-        break;
-        case '3' : location = "Reception Hall";
-        break;
-        case '4' : location = "Staff Room";
-        break;
-        case '5' : location = "Archives";
-        break;
+      switch (locationCode) {
+        case '0': location = "Conference Room";
+          break;
+        case '1': location = "Server Room";
+          break;
+        case '2': location = "Security Room";
+          break;
+        case '3': location = "Reception Hall";
+          break;
+        case '4': location = "Staff Room";
+          break;
+        case '5': location = "Archives";
+          break;
       }
     }
     let index = backupData.findIndex(data => data.id == workerID);
-    profile(index,location);
+    profile(index, location);
     const closeProfile = document.getElementById("closeProfile");
     const profileLay = document.querySelector(".profileLay");
     closeProfile.addEventListener("click", () => {
-    profileLay.remove();
+      profileLay.remove();
     })
-    document.addEventListener("click",(e)=>{
-      if(e.target.classList.contains("profileLay")){
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("profileLay")) {
         profileLay.remove();
       }
     })
-    document.addEventListener("keydown",(e)=>{
-      if(e.key == 'Escape'){
+    document.addEventListener("keydown", (e) => {
+      if (e.key == 'Escape') {
         profileLay.remove();
       }
     })
   }
 })
-document.addEventListener("click",(e)=>{
-  if(e.target.classList.contains("remover")){
+//ADDING AN EVENT LISTENER TO REMOVE THE THE WORKERS FROM THEIR ZONE
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remover")) {
     let match = e.target.id.match(/rm-([^\s]+)/);
     let targetId = match[1];
-    e.target.closest(".assigned-worker").remove();
+    let divParent = e.target.closest(".assigned-worker").parentNode;
+    divParent.remove();
     const removedWorker = backupData.find(data => data.id == targetId);
     formData.push(removedWorker);
     displayUnassigned();
     redZoneAlert();
   }
 })
-function unassignedCounter(){
-  let counter = 0;
-  counter = formData.length;
-  unassaignedworker.innerHTML = counter;
-  console.log(counter);
+// FUNCTION TO SHOW THE COUNTER OF THE ASSIGNED WORKERS
+function unassignedCounter() {
+  unassaignedworker.innerHTML = `${unassignedList.childElementCount}`;
 }
-function redZoneAlert(){
+// FUNCTION TO TURN THE ZONES THAT NEED TO BE AT LEAST ONE WORKER ASSIGNED TO THEM INTO RED TO SHOW THAT THEY NEED ATTENTION
+function redZoneAlert() {
   const redZones = document.querySelectorAll(".attentionZones");
-  redZones.forEach(redZone=>{
+  redZones.forEach(redZone => {
     const container = redZone.parentNode;
-    if(redZone.childElementCount>0){
+    if (redZone.childElementCount > 0) {
       container.classList.remove("bg-red-600/50");
-    } else{
-      if(!(container.classList.contains("bg-red-600/50"))){
+    } else {
+      if (!(container.classList.contains("bg-red-600/50"))) {
         container.classList.add("bg-red-600/50");
       }
     }
   })
 }
+

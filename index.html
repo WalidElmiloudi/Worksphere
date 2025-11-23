@@ -17,12 +17,13 @@
 
 <body class="font-['open_sans']">
   <main class="w-full h-screen flex flex-col xl:flex-row gap-0.5">
+    <!-- IMAGE AND ZONES SECTION -->
     <section class="  relative w-full h-100 md:w-screen md:h-screen xl:w-700 xl:h-screen 2xl:w-1400">
       <img class="w-full h-full" src="img/floor.jpg" alt="the company floor">
       <div class="grid grid-cols-13 grid-rows-6 w-full h-full absolute gap-x-2 top-0">
         <div class=" col-span-5 row-span-2 mt-1 ml-1 relative flex justify-center items-center">
           <div
-            class="w-30 h-15 xl:w-70 xl:h-45 2xl:w-90 2xl:h-68 flex justify-center items-center flex-wrap gap-1 container">
+            class="w-30 h-15 xl:w-70 xl:h-45 2xl:w-90 2xl:h-68 flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-20 container">
           </div>
           <button
             class="inZoneAdd zone-0 w-2 h-2 xl:w-5 xl:h-5 xl:text-xl xl:bottom-2 xl:left-36 2xl:w-8 2xl:h-8 2xl:text-2xl 2xl:bottom-3 2xl:left-60 bg-blue-600 text-white text-xs font-bold flex justify-center items-center absolute bottom-1 left-16 cursor-pointer">+</button>
@@ -30,7 +31,7 @@
         <div
           class=" col-start-8 flex justify-center col-span-3 row-span-2 mt-1.5 bg-red-600/50 xl:pt-1.5 2xl:pt-9 relative">
           <div
-            class="attentionZones w-20 h-18 xl:w-45 xl:h-54 2xl:w-70 2xl:h-70 flex justify-center items-center flex-wrap gap-1 container">
+            class="attentionZones w-20 h-18 xl:w-45 xl:h-54 2xl:w-70 2xl:h-70 flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-28 container">
 
           </div>
           <button
@@ -38,7 +39,7 @@
         </div>
         <div class=" col-span-3 flex justify-center row-span-2 mt-1.5 -ml-1 bg-red-600/50 xl:pt-1.5 2xl:pt-9 relative">
           <div
-            class="attentionZones w-20 h-18 xl:w-45 xl:h-54 2xl:w-70 2xl:h-70 flex justify-center items-center flex-wrap gap-1 container">
+            class="attentionZones w-20 h-18 xl:w-45 xl:h-54 2xl:w-70 2xl:h-70 flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-28 container">
 
           </div>
           <button
@@ -47,7 +48,7 @@
         <div
           class=" col-start-1 xl:pt-1.5 flex justify-center pt-0.5 col-span-5 row-span-4 bg-red-600/50 2xl:pt-20 relative">
           <div
-            class="attentionZones w-30 h-37 xl:w-70 xl:h-100 2xl:w-130 2xl:h-125 flex justify-center items-center flex-wrap gap-1 container">
+            class="attentionZones w-30 h-37 xl:w-70 xl:h-100 2xl:w-130 2xl:h-125 flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-28 container">
 
           </div>
           <button
@@ -55,7 +56,7 @@
         </div>
         <div class=" col-start-8 flex justify-center row-start-5 col-span-3 row-span-2 -mr-0.5 2xl:pt-8  relative">
           <div
-            class="w-18 h-18 xl:w-45 xl:h-54.5 2xl:w-70 2xl:h-70 2xl:-mr-4 flex justify-center items-center flex-wrap gap-1 container">
+            class="w-18 h-18 xl:w-45 xl:h-54.5 2xl:w-70 2xl:h-70 2xl:-mr-4 flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-28 container">
 
           </div>
           <button
@@ -64,7 +65,7 @@
         <div
           class=" col-start-11 flex justify-center row-start-5 col-span-3 row-span-2 -ml-1 2xl:pt-8 bg-red-600/50 relative">
           <div
-            class="attentionZones w-18 h-18 xl:w-45 xl:h-54.5 2xl:w-70 2xl:h-70  flex justify-center items-center flex-wrap gap-1 container">
+            class="attentionZones w-18 h-18 xl:w-45 xl:h-54.5 2xl:w-70 2xl:h-70  flex justify-center items-center flex-wrap gap-1 xl:gap-10 2xl:gap-28 container">
 
           </div>
           <button
@@ -72,6 +73,7 @@
         </div>
       </div>
     </section>
+    <!-- UNASSIGNED LIST SECTION -->
     <section class="bg-[#c2996d] w-full h-full flex justify-center items-center">
       <div
         class="bg-[#e5bc91] w-85 h-120 xl:h-180 2xl:h-230  2xl:w-110 rounded-xl flex flex-col items-center justify-around xl:justify-evenly">
@@ -88,6 +90,7 @@
             New Workers</button></div>
       </div>
     </section>
+    <!-- ADDING NEW WORKER MODAL -->
     <section id="modal" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
       aria-hidden="true">
       <div id="modalForum"
@@ -114,15 +117,15 @@
           </select>
           <div class="flex flex-col gap-3">
             <input id="photoUrl" class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="url"
-              id="photo" placeholder="URL of the photo">
+              id="photo" placeholder="ex : http://xxxx.png">
             <div id="photoZone" class="w-20 h-20 xl:w-30 xl:h-30 bg-white rounded-full overflow-hidden">
               <img id="imgUrl" src="" alt="">
             </div>
           </div>
           <input class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="email" id="email"
-            placeholder="Email" required>
+            placeholder="example@email.com" required>
           <input class="bg-white py-3 pl-1.5 w-82 rounded-md text-sm xl:text-lg xl:w-102" type="text" id="phone"
-            placeholder="Phone" required>
+            placeholder="ex :0X-XXXX-XXXX" required>
           <div id="exContainer" class="flex flex-col gap-1">
             <div class="exParent w-82 rounded-md bg-slate-200 flex flex-col gap-6 py-2 xl:w-102 xl:gap-8">
               <h1 class="text-xl font-bold text-center xl:text-2xl">Employee Experience :</h1>
@@ -158,6 +161,7 @@
         </div>
       </div>
     </section>
+    <!-- ADD IN-ZONE WORKERS MODAL -->
     <section id="employeeList" class="overlay fixed w-full h-screen bg-black/60 justify-center items-center hidden"
       aria-hidden="true">
       <div
