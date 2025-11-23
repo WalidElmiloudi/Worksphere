@@ -377,7 +377,7 @@ function handleAddWorker(e, workerContainer, zone, zoneLimit) {
       const worker = formData.findIndex(data => data.id == workerId);
       const empDiv = document.createElement("div")
       empDiv.innerHTML = `<div id="${formData[worker].id}"
-          class=" assigned-worker inZone-${zone} worker w-7 h-7 xl:w-12 xl:h-12 bg-[#f7cea1]  rounded-full flex flex-col justify-center items-center relative xl:scale-150 2xl:scale-200">
+          class=" assigned-worker inZone-${zone} worker w-7 h-7 xl:w-12 xl:h-12 bg-[#f7cea1]  rounded-full flex flex-col justify-center items-center relative xl:scale-150 2xl:scale-170">
           <img class="w-full h-full rounded-full -mt-0.5 pointer-events-none" src="${formData[worker].picture}" alt="${formData[worker].name} picture">
           <div id="rm-${formData[worker].id}"
             class="remover w-1.5 h-1.5  pt-0.5 flex xl:w-3 xl:h-3  justify-center items-center bg-red-500 rounded-full absolute top-0 -right-0.5 cursor-pointer">
@@ -464,7 +464,7 @@ function profile(index, location) {
           <h2 class="text-xl font-bold text-[#424242]">${role}</h2>
         </div>
         <p class="text-lg font-bold mb-4 text-center">Current location : <br><span class="text-md text-green-600">${location}</span></p>
-        <div class="py-2 px-2 border rounded-md flex flex-col items-center gap-5 bg-[#ffa340]/20 w-70 h-90">
+        <div class="py-2 px-2 border rounded-md flex flex-col items-center gap-5 bg-[#ffa340]/20 w-70 h-90 overflow-scroll [scrollbar-width:none]">
           <h1 class="text-xl font-bold text-center">Worker Informations</h1>
           <div class="flex flex-col items-start w-60  gap-2">
             <p class="text-md font-bold">Email : <span class="font-normal">${backupData[index].email}</span></p>
