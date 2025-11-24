@@ -149,7 +149,13 @@ submitBtn.addEventListener("click", (e) => {
     if (experience.classList.contains("company")) {
       if (!companyRegex.test(experience.value)) {
         experience.classList.replace("bg-white", "bg-red-100");
-        alert("Check your Worker's Experience's Company Name");
+        Toastify({
+              text: "Company name is Invalid !",
+              duration: 3000,
+              style: {
+    background: "red",
+  }
+        }).showToast();
         count = 0;
       } else {
         if (experience.classList.contains("bg-red-100")) {
@@ -162,7 +168,13 @@ submitBtn.addEventListener("click", (e) => {
     if (experience.classList.contains("exRole")) {
       if (!exRoleRegex.test(experience.value)) {
         experience.classList.replace("bg-white", "bg-red-100");
-        alert("Check your Worker's Experience's Role");
+        Toastify({
+              text: "Experience Role is Invalid !",
+              duration: 3100,
+              style: {
+    background: "red",
+  }
+        }).showToast();
         count = 0;
 
       } else {
@@ -186,7 +198,13 @@ submitBtn.addEventListener("click", (e) => {
         if (end < start) {
           experience.classList.replace("bg-white", "bg-red-100");
           count = 0;
-          alert("Check your Worker's Experience's Dates");
+          Toastify({
+              text: "Experience Dates is Wrong !",
+              duration: 3200,
+              style: {
+    background: "red",
+  }
+        }).showToast();
         } else {
           if (experience.classList.contains("bg-red-100")) {
             experience.classList.replace("bg-red-100", "bg-white");
@@ -195,13 +213,25 @@ submitBtn.addEventListener("click", (e) => {
           count++;
         }
       } else {
-        alert("Check your Worker's Experience's Dates");
+        Toastify({
+              text: "Fill the experience Dates",
+              duration: 3300,
+              style: {
+    background: "red",
+  }
+        }).showToast();
       }
     }
   })
   if (!nameRegex.test(firstName.value)) {
     firstName.classList.replace("bg-white", "bg-red-100");
-    alert("Check your Worker's First Name");
+    Toastify({
+              text: "Worker's First name is Invalid !",
+              duration: 3400,
+              style: {
+    background: "red",
+  }
+        }).showToast();
   } else {
     if (firstName.classList.contains("bg-red-100")) {
       firstName.classList.replace("bg-red-100", "bg-white");
@@ -209,7 +239,13 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!nameRegex.test(lastName.value)) {
     lastName.classList.replace("bg-white", "bg-red-100");
-    alert("Check your Worker's Last Name");
+    Toastify({
+              text: "Worker's Last name is Invalid !",
+              duration: 3500,
+              style: {
+    background: "red",
+  }
+        }).showToast();
   } else {
     if (lastName.classList.contains("bg-red-100")) {
       lastName.classList.replace("bg-red-100", "bg-white");
@@ -217,7 +253,13 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!role.value) {
     role.classList.replace("bg-white", "bg-red-100");
-    alert("Check your Worker's Role");
+    Toastify({
+              text: "Worker's Role is empty !",
+              duration: 3600,
+              style: {
+    background: "red",
+  }
+        }).showToast();
   } else {
     if (role.classList.contains("bg-red-100")) {
       role.classList.replace("bg-red-100", "bg-white");
@@ -226,7 +268,13 @@ submitBtn.addEventListener("click", (e) => {
   if (workerPhoto) {
     if (!phtoUrlRegex.test(workerPhoto)) {
       photoUrl.classList.replace("bg-white", "bg-red-100");
-      alert("Check your Worker's Photo's Url");
+      Toastify({
+              text: "The Photo Url is Invalid !",
+              duration: 3700,
+              style: {
+    background: "red",
+  }
+        }).showToast();
     } else {
       if (photoUrl.classList.contains("bg-red-100")) {
         photoUrl.classList.replace("bg-red-100", "bg-white");
@@ -237,7 +285,13 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!emailRegex.test(email.value)) {
     email.classList.replace("bg-white", "bg-red-100");
-    alert("Check your Worker's Email");
+    Toastify({
+              text: "Worker's Email is Invalid !",
+              duration: 3800,
+              style: {
+    background: "red",
+  }
+        }).showToast();
   } else {
     if (email.classList.contains("bg-red-100")) {
       email.classList.replace("bg-red-100", "bg-white");
@@ -245,7 +299,13 @@ submitBtn.addEventListener("click", (e) => {
   }
   if (!phoneRegex.test(phoneNum.value.trim())) {
     phoneNum.classList.replace("bg-white", "bg-red-100");
-    alert("Check your Worker's Phone Number");
+    Toastify({
+              text: "Worker's Phone Number is Invalid !",
+              duration: 3900,
+              style: {
+    background: "red",
+  }
+        }).showToast();
   } else {
     if (phoneNum.classList.contains("bg-red-100")) {
       phoneNum.classList.replace("bg-red-100", "bg-white");
@@ -271,6 +331,13 @@ submitBtn.addEventListener("click", (e) => {
           };
           formData.push(employeeData);
           localStorage.setItem("formData", JSON.stringify(formData));
+          Toastify({
+              text: "Worker's Information saved succesfuly !",
+              duration: 3000,
+              style: {
+    background: "green",
+  }
+        }).showToast();
           displayUnassigned();
           firstName.value = "";
           lastName.value = "";
@@ -575,4 +642,3 @@ function redZoneAlert() {
     }
   })
 }
-
